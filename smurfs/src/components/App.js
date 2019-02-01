@@ -7,7 +7,7 @@ import "./App.css";
  `How do I ensure that my component links the state to props?`
  */
 import { connect } from "react-redux";
-import { getSmurfs, addSmurf, deleteSmurf } from "../actions";
+import { getSmurfs, addSmurf, deleteSmurf, updateSmurf } from "../actions";
 
 class App extends Component {
   constructor() {
@@ -15,7 +15,9 @@ class App extends Component {
     this.state = {
       name: "",
       age: "",
-      height: ""
+      height: "",
+      id: null,
+      isEditing: false
     };
   }
 
@@ -49,6 +51,35 @@ class App extends Component {
     this.props.deleteSmurf(id);
   };
 
+  populateForm = (e, smurf) => {
+    e.preventDefault();
+    this.setState({
+      name: smurf.name,
+      age: smurf.age,
+      height: smurf.height,
+      id: smurf.id,
+      isEditing: true
+    });
+  };
+
+  updateSmurf = e => {
+    e.preventDefault();
+    const editedSmurf = {
+      name: this.state.name,
+      age: this.state.age,
+      height: this.state.height,
+      id: this.state.id
+    };
+    console.log(editedSmurf);
+    this.props.updateSmurf(this.state.id, editedSmurf);
+    this.setState({
+      name: "",
+      age: "",
+      height: "",
+      isEditing: false
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -79,9 +110,15 @@ class App extends Component {
             value={this.state.height}
             onChange={this.onChange}
           />
-          <button className="add-smurf-button" onClick={this.onSubmit}>
-            Add Smurf!
-          </button>
+          {!this.state.isEditing ? (
+            <button className="add-smurf-button" onClick={this.onSubmit}>
+              Add Smurf!
+            </button>
+          ) : (
+            <button className="add-smurf-button" onClick={this.updateSmurf}>
+              Save Changes!
+            </button>
+          )}
         </form>
 
         <span className="smurfs-container">
@@ -96,6 +133,12 @@ class App extends Component {
                   onClick={e => this.deleteSmurf(e, smurf.id)}
                 >
                   Delete Smurf
+                </button>
+                <button
+                  className="edit-button"
+                  onClick={e => this.populateForm(e, smurf)}
+                >
+                  Edit Smurf
                 </button>
               </div>
             );
@@ -112,5 +155,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSmurfs, addSmurf, deleteSmurf }
+  { getSmurfs, addSmurf, deleteSmurf, updateSmurf }
 )(App);
