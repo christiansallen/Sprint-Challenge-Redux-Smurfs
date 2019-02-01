@@ -3,12 +3,18 @@
   box-sizing: border-box;
   max-width: 1000px;
   margin: 0 auto;
+  background-color: #62b1ff;
+}
+
+h1 {
+  color: white;
 }
 
 .smurfs-container {
   border: 1px solid red;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
 
 .smurf {
@@ -16,8 +22,20 @@
   margin: 20px;
   border: 1px solid blue;
   padding: 10px;
+  background-color: rgb(231, 231, 231);
+  border-radius: 10px;
 }
 
 .characteristic {
+  font-size: 16px;
+}
+
+.input {
+  text-align: center;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.add-smurf-button {
   font-size: 16px;
 }
